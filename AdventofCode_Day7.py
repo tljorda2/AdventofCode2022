@@ -83,9 +83,15 @@ def filesize_calculator(dictionary: dict) -> dict:
             lower_directory_size = {item: 0}
             for i in current_item_size.values():
                 if type(i) == int:
+                    # Since the directories are cumulative, we need to continue adding to the higher directory
                     lower_directory_size[item] += i
+                    top_directory_size['/'] += i
                 elif type(i) == dict:
                     Folder_Storage.append(i)
+                    for key in i:
+                        last_dir = i.get(key)
+                        lower_directory_size[item] += last_dir
+                        top_directory_size['/'] += last_dir
 
             Folder_Storage.append(lower_directory_size)
     Folder_Storage.append(top_directory_size)
