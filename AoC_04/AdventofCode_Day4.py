@@ -63,7 +63,7 @@ def Check_IfIn(Pair):
 #%%
 with open('C:\\Users\\Timothy Jordan\\Desktop\\Pandas Practice\\Advent of Code\\AoC_04\\AoCDay4_Data.txt') as file:
     AoCDay4_Data = file.readlines()
-
+file.close()
 # Taking out some of the extra characters to make it easier for me to interpret
 pattern = r'[\n]'
 # This reorganizes the data into pairs of lists with the integer assignemnts that makes it easier for me to slice
