@@ -1,4 +1,6 @@
 #%%
+# I use this to test the runtime as part of the goal for this project is to minimize its runtime
+# All files have to be in the same directory
 import time
 
 startMillis = int(round(time.time() * 1000))
