@@ -84,6 +84,7 @@ def RockPaperScissors(Player1, Player2):
 # Getting the data from the text file
 with open('C:\\Users\\Timothy Jordan\\Desktop\\Pandas Practice\\Advent of Code\\AoC_02\\AoCDay2_Data.txt') as file:
     Day2_Data = file.readlines()
+file.close()
 results = []
 # for loop that takes the input data, converts it into a usable input for the function, and stores each of the results in a list
 
