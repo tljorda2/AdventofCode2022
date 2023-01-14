@@ -6,6 +6,7 @@
 with open('C:\\Users\\Timothy Jordan\\Desktop\\Pandas Practice\\Advent of Code\AoCDay1_Data.txt') as file:
     # Reading all of the lines
     Day1_Data = file.readlines()
+file.close()
 # Setting up two variables. As we go through the file, one will keep track of the sum for the current elf while the other will have the current max of all elves
 current_max = 0
 current_sum = 0
