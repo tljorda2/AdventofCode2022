@@ -20,7 +20,7 @@ file.close()
 
 # Iterating through the lines read from the file
 # Each line is initially created as a single string within a list
-# Need to split each number in each string into an individual number
+# Need to split each number in each string into individual numbers
 # That is apart of a new list that was the string
 Tree_Heights_List = []
 for line in AoCDay8_Data:
@@ -46,6 +46,7 @@ print(Tree_Heights_Matrix)
 # Creating a function that will take a subarray from a numpy matrix and check if a number is outright the largest number
 def CheckRow2(number, matrix_row):
     # np.nditer iterates through each item of an array
+    # I think this is where I was having problems before
     for i in np.nditer(matrix_row):
         # If there is any number that is equal to or greater than the input number, it returns false
         if i >= number:
@@ -113,6 +114,65 @@ print(TreeCheck(Tree_Heights_Matrix))
 # %%
 # Part two wants the scenic value of each pf the trees
 # This is measured by the number of visible trees in each direction multiplied together
-def ScenicScore(number, matrix_row):
-    for i in np.nditer(matrix_row):
-        
+def ScenicScore(number, array):
+    number_visibletrees = 0
+    empty_array = np.array([])
+    flag = np.size(empty_array)
+    # Checking the flag for edge trees
+    if np.size(array) == flag:
+        return 0
+    # read order as a aprameter on the numpy docs for nditer
+    # Still need to look into it a bit more but it works properly for what I am trying to do.
+    # It represents C order, while the default is K.
+    # K order gives us how they appear from memory
+    # Creating a variable that will count the number of iterations
+    else:
+        #X_maxiter, Y_maxiter = np.shape(array)
+        for i in np.nditer(array, order='C'):
+            if i >= number:
+                number_visibletrees += 1
+                return number_visibletrees
+            else:
+                number_visibletrees += 1
+    return number_visibletrees
+# I am going to need to flip the left and upper checks, since they will be working from the outside-in.
+# I want all directions to work from the intiial tree outward to the edge.
+
+
+#%%
+def ScenicScore_Total(matrix):
+    # Getting the shape or "Dimensions" of the matrix inputted
+    # This will be used to ignore the values that are on the edge of the matrix and later assign a value of 1 to them
+    map_dim = np.shape(matrix)
+    map_dim = list(map_dim)
+    # Creating an empty matrix that is the same exact size as the one inputted
+    # This will be what is changed to refelect the map of visible trees
+    return_matrix = np.zeros([map_dim[0], map_dim[1]])
+    # First for loop to get the row
+    for i in range(map_dim[0]):
+        # Second for loop to get the column
+        for j in range(map_dim[1]):
+            # Getting the current number based on the row and column
+            current_tree = matrix[i,j]
+            # This will get the arrays for each cardinal direction from the current tree while not including it
+            # Also need to flip the array so that it will iterate from the inside out for the upper and left sides
+            Upper_Column = np.flip(matrix[:i,j])
+            # In order to exclude the current tree, we have to add one to the index in some situations
+            Lower_Column = matrix[i+1:,j]
+            Right_Column = matrix[i,j+1:]
+            Left_Column = np.flip(matrix[i,:j])
+            # Getting the values of the scenic score for each direction from the current tree
+            Upper_Value = ScenicScore(current_tree, Upper_Column)
+            Lower_Value = ScenicScore(current_tree, Lower_Column)
+            Right_Value = ScenicScore(current_tree, Right_Column)
+            Left_Value = ScenicScore(current_tree, Left_Column)
+            # Total value is the scenic score of each direction added together
+            Total_Value = Upper_Value * Lower_Value * Right_Value * Left_Value
+            print(i, j)
+            print('current value', current_tree)
+            print([Upper_Value, Lower_Value, Right_Value, Left_Value])
+            print('Total',Total_Value)
+            return_matrix[i,j] = Total_Value
+    return return_matrix.max()
+ScenicScore_Total(Tree_Heights_Matrix)
+
